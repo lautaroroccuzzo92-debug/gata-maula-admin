@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Gata Maula — Administración</title>
+<style>
+  :root{
+    --celeste:#A8D4E0;
+    --negro:#1a1a1a;
+    --blanco:#ffffff;
+    --verde:#3a7d44;
+    --rojo:#a83232;
+    --amarillo:#8a6d1a;
+    --gris:#6b6b6b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--celeste);color:var(--negro);
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    min-height:100vh;padding-bottom:50px;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .logo{display:flex;justify-content:center;margin:8px 0 4px;}
+  .logo svg{width:100%;max-width:280px;height:auto;}
+  .saludo{text-align:center;font-size:17px;font-weight:600;margin:4px 0 20px;}
+  .pin-wrap{max-width:280px;margin:60px auto 0;text-align:center;}
+  .pin-wrap input{
+    width:100%;text-align:center;font-size:28px;letter-spacing:10px;padding:14px;
+    border-radius:12px;border:1px solid rgba(26,26,26,0.3);background:#fff;
+  }
+  button.big{
+    width:100%;background:var(--negro);color:#fff;border:none;border-radius:14px;
+    padding:16px;font-size:16px;font-weight:700;cursor:pointer;margin-top:14px;
+  }
+  .tabs{display:flex;gap:6px;overflow-x:auto;margin:14px 0;padding-bottom:4px;}
+  .tab{
+    background:rgba(255,255,255,0.5);border:1px solid rgba(26,26,26,0.2);border-radius:20px;
+    padding:9px 16px;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;color:var(--negro);
+  }
+  .tab.activo{background:var(--negro);color:#fff;}
+  .card{
+    background:rgba(255,255,255,0.6);border-radius:14px;padding:16px;margin-bottom:14px;
+    border:1px solid rgba(26,26,26,0.15);
+  }
+  .filtros{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  select,input[type=text]{
+    width:100%;padding:10px;border-radius:10px;border:1px solid rgba(26,26,26,0.3);
+    font-size:14px;background:#fff;color:var(--negro);
+  }
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid rgba(26,26,26,0.12);}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:0.4px;color:var(--gris);}
+  .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;}
+  .badge-ok{background:rgba(58,125,68,0.18);color:var(--verde);}
+  .badge-alerta{background:rgba(168,50,50,0.18);color:var(--rojo);}
+  .resumen-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(26,26,26,0.1);font-size:14px;}
+  .resumen-item strong{font-weight:700;}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .kpi{background:rgba(255,255,255,0.6);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(26,26,26,0.15);}
+  .kpi .valor{font-size:22px;font-weight:800;}
+  .kpi .label{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:0.5px;}
+  .oculto{display:none !important;}
+  .loader{display:flex;align-items:center;justify-content:center;gap:10px;padding:30px 0;font-weight:600;}
+  .spinner{width:22px;height:22px;border:3px solid rgba(26,26,26,0.2);border-top-color:var(--negro);border-radius:50%;animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .top-actions{display:flex;justify-content:flex-end;padding:6px 0;}
+  .icon-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--negro);}
+  .vacio{text-align:center;color:var(--gris);font-size:13.5px;padding:20px 0;}
+  .aviso{font-size:12.5px;color:var(--gris);margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- PANTALLA PIN -->
+  <div id="pantalla-pin">
+    <div class="logo">
+      <svg viewBox="0 0 320 170" xmlns="http://www.w3.org/2000/svg">
+        <text x="160" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="18" letter-spacing="6" fill="#1a1a1a">—GATA—</text>
+        <text x="160" y="95" text-anchor="middle" font-family="Georgia, serif" font-size="58" font-weight="700" fill="none" stroke="#1a1a1a" stroke-width="2">MAULA</text>
+        <line x1="40" y1="118" x2="280" y2="118" stroke="#1a1a1a" stroke-width="1.5"/>
+        <text x="160" y="142" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#1a1a1a">FIAMBRES + VERMUT</text>
+      </svg>
+    </div>
+    <div class="pin-wrap">
+      <div id="pin-titulo" style="margin-bottom:10px;font-weight:700;">Ingresá tu PIN</div>
+      <input type="password" id="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••">
+      <button class="big" id="btn-pin-entrar">Entrar</button>
+      <div class="aviso" id="pin-aviso"></div>
+    </div>
+  </div>
+
+  <!-- PANTALLA ADMIN -->
+  <div id="pantalla-admin" class="oculto">
+    <div class="top-actions">
+      <button class="icon-btn" id="btn-bloquear">🔒</button>
+      <button class="icon-btn" id="btn-recargar">🔄</button>
+    </div>
+    <div class="logo">
+      <svg viewBox="0 0 320 170" xmlns="http://www.w3.org/2000/svg">
+        <text x="160" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="18" letter-spacing="6" fill="#1a1a1a">—GATA—</text>
+        <text x="160" y="95" text-anchor="middle" font-family="Georgia, serif" font-size="58" font-weight="700" fill="none" stroke="#1a1a1a" stroke-width="2">MAULA</text>
+        <line x1="40" y1="118" x2="280" y2="118" stroke="#1a1a1a" stroke-width="1.5"/>
+        <text x="160" y="142" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#1a1a1a">FIAMBRES + VERMUT</text>
+      </svg>
+    </div>
+    <div class="saludo" id="saludo-texto"></div>
+
+    <div class="tabs">
+      <div class="tab activo" data-tab="historial">Historial</div>
+      <div class="tab" data-tab="proveedores">Por proveedor</div>
+      <div class="tab" data-tab="alertas">Alertas de precio</div>
+      <div class="tab" data-tab="eerr">EERR del mes</div>
+      <div class="tab" data-tab="config">⚙️ Ajustes</div>
+    </div>
+
+    <div id="loader-datos" class="loader"><div class="spinner"></div><span>Cargando datos…</span></div>
+
+    <!-- HISTORIAL -->
+    <div id="vista-historial" class="vista oculto">
+      <div class="card">
+        <div class="filtros">
+          <select id="f-proveedor"><option value="">Todos los proveedores</option></select>
+          <select id="f-categoria"><option value="">Todas las categorías</option></select>
+          <select id="f-mes"><option value="">Todos los meses</option></select>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="tabla-historial">
+            <thead><tr><th>Fecha</th><th>Proveedor</th><th>Producto</th><th>Total</th><th>Resp.</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="vacio oculto" id="historial-vacio">No hay ingresos con esos filtros.</div>
+      </div>
+    </div>
+
+    <!-- POR PROVEEDOR -->
+    <div id="vista-proveedores" class="vista oculto">
+      <div class="card">
+        <select id="mes-proveedores" style="margin-bottom:10px"></select>
+        <div id="lista-proveedores"></div>
+      </div>
+    </div>
+
+    <!-- ALERTAS -->
+    <div id="vista-alertas" class="vista oculto">
+      <div class="card">
+        <div style="font-size:13px;color:var(--gris);margin-bottom:10px">Se marca cuando un producto subió más de 10% respecto al ingreso anterior del mismo proveedor.</div>
+        <div id="lista-alertas"></div>
+        <div class="vacio oculto" id="alertas-vacio">No hay subas mayores al 10% detectadas.</div>
+      </div>
+    </div>
+
+    <!-- EERR -->
+    <div id="vista-eerr" class="vista oculto">
+      <div class="kpi-grid">
+        <div class="kpi"><div class="valor" id="kpi-ventas">—</div><div class="label">Ventas del mes</div></div>
+        <div class="kpi"><div class="valor" id="kpi-gastos">—</div><div class="label">Gastos del mes</div></div>
+      </div>
+      <div class="card">
+        <div class="resumen-item"><span>Mes analizado</span><strong id="eerr-mes">—</strong></div>
+        <div class="resumen-item"><span>Resultado (ventas - gastos)</span><strong id="eerr-resultado">—</strong></div>
+      </div>
+      <div class="aviso" id="eerr-nota"></div>
+    </div>
+
+    <!-- CONFIG -->
+    <div id="vista-config" class="vista oculto">
+      <div class="card">
+        <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">URL del Apps Script</label>
+        <input type="text" id="cfg-script-url">
+        <label style="font-size:13px;font-weight:700;display:block;margin:12px 0 6px">Cambiar PIN (4 dígitos)</label>
+        <input type="password" id="cfg-nuevo-pin" inputmode="numeric" maxlength="4" placeholder="••••">
+      </div>
+      <button class="big" id="btn-guardar-config">Guardar</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKy8E5ZFp-gqq0Q5njwZJ5EjY81tIMQPLCZ7HrrP_CK9Em61G96t242XnvV95a7KbTTg/exec';
+const UMBRAL_ALERTA = 0.10;
+
+function scriptUrl() {
+  return localStorage.getItem('gm_admin_script_url') || DEFAULT_SCRIPT_URL;
+}
+
+let datosMercaderia = [];
+let datosEERR = null;
+
+// ---------- PIN ----------
+function pinGuardado() { return localStorage.getItem('gm_admin_pin'); }
+
+function initPin() {
+  const guardado = pinGuardado();
+  document.getElementById('pin-titulo').textContent = guardado ? 'Ingresá tu PIN' : 'Creá un PIN de 4 dígitos';
+}
+document.getElementById('btn-pin-entrar').onclick = () => {
+  const val = document.getElementById('pin-input').value.trim();
+  if (!/^\d{4}$/.test(val)) {
+    document.getElementById('pin-aviso').textContent = 'El PIN debe tener 4 dígitos.';
+    return;
+  }
+  const guardado = pinGuardado();
+  if (!guardado) {
+    localStorage.setItem('gm_admin_pin', val);
+    entrarAAdmin();
+  } else if (val === guardado) {
+    entrarAAdmin();
+  } else {
+    document.getElementById('pin-aviso').textContent = 'PIN incorrecto.';
+    document.getElementById('pin-input').value = '';
+  }
+};
+document.getElementById('btn-bloquear').onclick = () => {
+  document.getElementById('pantalla-admin').classList.add('oculto');
+  document.getElementById('pantalla-pin').classList.remove('oculto');
+  document.getElementById('pin-input').value = '';
+  initPin();
+};
+
+function entrarAAdmin() {
+  document.getElementById('pantalla-pin').classList.add('oculto');
+  document.getElementById('pantalla-admin').classList.remove('oculto');
+  const h = new Date().getHours();
+  const momento = h < 12 ? 'Buenos días' : (h < 20 ? 'Buenas tardes' : 'Buenas noches');
+  document.getElementById('saludo-texto').textContent = `${momento}, Lautaro!`;
+  cargarTodo();
+}
+
+// ---------- Tabs ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('activo'));
+    tab.classList.add('activo');
+    document.querySelectorAll('.vista').forEach(v => v.classList.add('oculto'));
+    document.getElementById('vista-' + tab.dataset.tab).classList.remove('oculto');
+    if (tab.dataset.tab === 'config') {
+      document.getElementById('cfg-script-url').value = scriptUrl();
+    }
+  };
+});
+document.getElementById('btn-recargar').onclick = () => cargarTodo();
+document.getElementById('btn-guardar-config').onclick = () => {
+  const url = document.getElementById('cfg-script-url').value.trim();
+  if (url) localStorage.setItem('gm_admin_script_url', url);
+  const nuevoPin = document.getElementById('cfg-nuevo-pin').value.trim();
+  if (/^\d{4}$/.test(nuevoPin)) {
+    localStorage.setItem('gm_admin_pin', nuevoPin);
+    document.getElementById('cfg-nuevo-pin').value = '';
+  }
+  cargarTodo();
+};
+
+// ---------- Carga de datos ----------
+async function cargarTodo() {
+  document.getElementById('loader-datos').classList.remove('oculto');
+  document.querySelectorAll('.vista').forEach(v => v.classList.add('oculto'));
+  try {
+    const [rMerc, rEerr] = await Promise.all([
+      fetch(scriptUrl() + '?action=mercaderia'),
+      fetch(scriptUrl() + '?action=eerrResumen')
+    ]);
+    const dMerc = await rMerc.json();
+    const dEerr = await rEerr.json();
+    datosMercaderia = dMerc.success ? dMerc.data : [];
+    datosEERR = dEerr.success ? dEerr.data : null;
+  } catch (err) {
+    alert('No se pudo conectar con el Apps Script: ' + err.message);
+    datosMercaderia = [];
+    datosEERR = null;
+  }
+  document.getElementById('loader-datos').classList.add('oculto');
+  const tabActivo = document.querySelector('.tab.activo').dataset.tab;
+  document.getElementById('vista-' + tabActivo).classList.remove('oculto');
+
+  renderFiltrosHistorial();
+  renderHistorial();
+  renderProveedores();
+  renderAlertas();
+  renderEERR();
+}
+
+// ---------- Historial ----------
+function campoFecha(r) { return r.fecha || ''; }
+function campoProveedor(r) { return r.proveedor || ''; }
+function campoCategoria(r) { return r.categoria || ''; }
+function campoProducto(r) { return r.producto || ''; }
+function campoTotal(r) { return Number(r.total) || 0; }
+function campoResponsable(r) { return r.responsable || ''; }
+
+function renderFiltrosHistorial() {
+  const proveedores = [...new Set(datosMercaderia.map(campoProveedor))].filter(Boolean).sort();
+  const categorias = [...new Set(datosMercaderia.map(campoCategoria))].filter(Boolean).sort();
+  const meses = [...new Set(datosMercaderia.map(r => campoFecha(r).slice(0,7)))].filter(Boolean).sort().reverse();
+
+  const selProv = document.getElementById('f-proveedor');
+  const selCat = document.getElementById('f-categoria');
+  const selMes = document.getElementById('f-mes');
+  const selMesProv = document.getElementById('mes-proveedores');
+
+  selProv.innerHTML = '<option value="">Todos los proveedores</option>' + proveedores.map(p => `<option value="${p}">${p}</option>`).join('');
+  selCat.innerHTML = '<option value="">Todas las categorías</option>' + categorias.map(c => `<option value="${c}">${c}</option>`).join('');
+  selMes.innerHTML = '<option value="">Todos los meses</option>' + meses.map(m => `<option value="${m}">${m}</option>`).join('');
+  selMesProv.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('') || '<option value="">Sin datos</option>';
+
+  [selProv, selCat, selMes].forEach(s => s.onchange = renderHistorial);
+  selMesProv.onchange = renderProveedores;
+}
+
+function renderHistorial() {
+  const prov = document.getElementById('f-proveedor').value;
+  const cat = document.getElementById('f-categoria').value;
+  const mes = document.getElementById('f-mes').value;
+
+  let filas = datosMercaderia.filter(r =>
+    (!prov || campoProveedor(r) === prov) &&
+    (!cat || campoCategoria(r) === cat) &&
+    (!mes || campoFecha(r).slice(0,7) === mes)
+  );
+  filas.sort((a,b) => campoFecha(b).localeCompare(campoFecha(a)));
+
+  const tbody = document.querySelector('#tabla-historial tbody');
+  tbody.innerHTML = filas.slice(0, 300).map(r => `
+    <tr>
+      <td>${campoFecha(r)}</td>
+      <td>${campoProveedor(r)}</td>
+      <td>${campoProducto(r)}</td>
+      <td>$${campoTotal(r).toLocaleString('es-AR', {minimumFractionDigits:2})}</td>
+      <td>${campoResponsable(r)}</td>
+    </tr>
+  `).join('');
+  document.getElementById('historial-vacio').classList.toggle('oculto', filas.length > 0);
+}
+
+// ---------- Por proveedor ----------
+function renderProveedores() {
+  const mes = document.getElementById('mes-proveedores').value;
+  const filas = datosMercaderia.filter(r => !mes || campoFecha(r).slice(0,7) === mes);
+  const totales = {};
+  filas.forEach(r => {
+    const p = campoProveedor(r) || 'Sin proveedor';
+    totales[p] = (totales[p] || 0) + campoTotal(r);
+  });
+  const ordenado = Object.entries(totales).sort((a,b) => b[1]-a[1]);
+  const cont = document.getElementById('lista-proveedores');
+  cont.innerHTML = ordenado.length ? ordenado.map(([p, t]) => `
+    <div class="resumen-item"><span>${p}</span><strong>$${t.toLocaleString('es-AR', {minimumFractionDigits:2})}</strong></div>
+  `).join('') : '<div class="vacio">Sin datos para este mes.</div>';
+}
+
+// ---------- Alertas de precio (>10%) ----------
+function renderAlertas() {
+  // Clave: proveedor + producto -> lista de {fecha, total_por_unidad}
+  const porClave = {};
+  datosMercaderia.forEach(r => {
+    const clave = campoProveedor(r) + '|' + campoProducto(r);
+    const precio = Number(r.precio_unit || r['precio_unit.'] || r.precio_unitario || 0);
+    if (!precio) return;
+    if (!porClave[clave]) porClave[clave] = [];
+    porClave[clave].push({ fecha: campoFecha(r), precio });
+  });
+
+  const alertas = [];
+  Object.entries(porClave).forEach(([clave, lista]) => {
+    lista.sort((a,b) => a.fecha.localeCompare(b.fecha));
+    for (let i = 1; i < lista.length; i++) {
+      const anterior = lista[i-1].precio;
+      const actual = lista[i].precio;
+      if (anterior > 0) {
+        const variacion = (actual - anterior) / anterior;
+        if (variacion > UMBRAL_ALERTA) {
+          const [proveedor, producto] = clave.split('|');
+          alertas.push({ proveedor, producto, anterior, actual, variacion, fecha: lista[i].fecha });
+        }
+      }
+    }
+  });
+  alertas.sort((a,b) => b.variacion - a.variacion);
+
+  const cont = document.getElementById('lista-alertas');
+  cont.innerHTML = alertas.map(a => `
+    <div class="resumen-item">
+      <span><span class="badge badge-alerta">+${(a.variacion*100).toFixed(0)}%</span> ${a.producto} <span style="color:var(--gris)">(${a.proveedor})</span></span>
+      <strong>$${a.anterior.toFixed(2)} → $${a.actual.toFixed(2)}</strong>
+    </div>
+  `).join('');
+  document.getElementById('alertas-vacio').classList.toggle('oculto', alertas.length > 0);
+}
+
+// ---------- EERR ----------
+function renderEERR() {
+  if (!datosEERR) {
+    document.getElementById('eerr-nota').textContent = 'No se pudo leer el resumen EERR.';
+    return;
+  }
+  document.getElementById('eerr-mes').textContent = datosEERR.mes || '—';
+  document.getElementById('kpi-gastos').textContent = '$' + (datosEERR.gastos || 0).toLocaleString('es-AR', {minimumFractionDigits:0});
+  document.getElementById('kpi-ventas').textContent = datosEERR.ventas != null ? '$' + datosEERR.ventas.toLocaleString('es-AR', {minimumFractionDigits:0}) : '—';
+  if (datosEERR.ventas != null) {
+    const resultado = datosEERR.ventas - datosEERR.gastos;
+    document.getElementById('eerr-resultado').textContent = '$' + resultado.toLocaleString('es-AR', {minimumFractionDigits:0});
+  } else {
+    document.getElementById('eerr-resultado').textContent = '—';
+  }
+  document.getElementById('eerr-nota').textContent = datosEERR.notaVentas || '';
+}
+
+// ---------- Init ----------
+initPin();
+</script>
+</body>
+</html>
