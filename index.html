@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>Gata Maula — Administración</title>
+<title>Gata Maula — Registro de Mercadería</title>
 <style>
   :root{
     --celeste:#A8D4E0;
@@ -11,71 +11,118 @@
     --blanco:#ffffff;
     --verde:#3a7d44;
     --rojo:#a83232;
-    --amarillo:#8a6d1a;
     --gris:#6b6b6b;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--celeste);color:var(--negro);
+    background:var(--celeste);
+    color:var(--negro);
     font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-    min-height:100vh;padding-bottom:50px;
+    min-height:100vh;
+    padding-bottom:40px;
   }
-  .wrap{max-width:720px;margin:0 auto;padding:16px;}
+  .wrap{max-width:480px;margin:0 auto;padding:16px;}
+  .top-actions{display:flex;justify-content:space-between;align-items:center;padding:8px 4px;}
+  .icon-btn{
+    background:none;border:none;font-size:22px;cursor:pointer;padding:6px 10px;
+    color:var(--negro);
+  }
   .logo{display:flex;justify-content:center;margin:8px 0 4px;}
-  .logo svg{width:100%;max-width:280px;height:auto;}
-  .saludo{text-align:center;font-size:17px;font-weight:600;margin:4px 0 20px;}
-  .pin-wrap{max-width:280px;margin:60px auto 0;text-align:center;}
-  .pin-wrap input{
-    width:100%;text-align:center;font-size:28px;letter-spacing:10px;padding:14px;
-    border-radius:12px;border:1px solid rgba(26,26,26,0.3);background:#fff;
+  .logo svg{width:100%;max-width:320px;height:auto;}
+  .saludo{
+    text-align:center;font-size:17px;font-weight:600;margin:6px 0 20px;color:var(--negro);
   }
-  button.big{
-    width:100%;background:var(--negro);color:#fff;border:none;border-radius:14px;
-    padding:16px;font-size:16px;font-weight:700;cursor:pointer;margin-top:14px;
-  }
-  .tabs{display:flex;gap:6px;overflow-x:auto;margin:14px 0;padding-bottom:4px;}
-  .tab{
-    background:rgba(255,255,255,0.5);border:1px solid rgba(26,26,26,0.2);border-radius:20px;
-    padding:9px 16px;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;color:var(--negro);
-  }
-  .tab.activo{background:var(--negro);color:#fff;}
+  h2.section-title{font-size:15px;text-transform:uppercase;letter-spacing:1px;margin:18px 0 8px;color:var(--negro);}
   .card{
-    background:rgba(255,255,255,0.6);border-radius:14px;padding:16px;margin-bottom:14px;
+    background:rgba(255,255,255,0.55);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
     border:1px solid rgba(26,26,26,0.15);
   }
-  .filtros{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-  select,input[type=text]{
-    width:100%;padding:10px;border-radius:10px;border:1px solid rgba(26,26,26,0.3);
-    font-size:14px;background:#fff;color:var(--negro);
+  button.big{
+    width:100%;background:var(--negro);color:var(--blanco);border:none;
+    border-radius:14px;padding:18px;font-size:17px;font-weight:700;
+    cursor:pointer;margin-bottom:12px;
   }
-  table{width:100%;border-collapse:collapse;font-size:13px;}
-  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid rgba(26,26,26,0.12);}
-  th{font-size:11px;text-transform:uppercase;letter-spacing:0.4px;color:var(--gris);}
-  .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;}
-  .badge-ok{background:rgba(58,125,68,0.18);color:var(--verde);}
-  .badge-alerta{background:rgba(168,50,50,0.18);color:var(--rojo);}
-  .resumen-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(26,26,26,0.1);font-size:14px;}
-  .resumen-item strong{font-weight:700;}
-  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-  .kpi{background:rgba(255,255,255,0.6);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(26,26,26,0.15);}
-  .kpi .valor{font-size:22px;font-weight:800;}
-  .kpi .label{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:0.5px;}
+  button.big:active{opacity:0.8;}
+  button.secundario{
+    width:100%;background:transparent;color:var(--negro);border:2px solid var(--negro);
+    border-radius:14px;padding:14px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:10px;
+  }
+  .grid-captura{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  .cap-btn{
+    background:var(--negro);color:var(--blanco);border:none;border-radius:14px;
+    padding:18px 8px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  .cap-btn span.emoji{font-size:26px;}
+  .paste-zone{
+    outline:none;min-height:1px;
+  }
+  .thumbs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+  .thumb{position:relative;width:74px;height:74px;border-radius:10px;overflow:hidden;border:2px solid var(--negro);}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .thumb .pdf-badge{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    background:var(--negro);color:var(--blanco);font-size:11px;font-weight:700;
+  }
+  .thumb .del{
+    position:absolute;top:-2px;right:-2px;background:var(--rojo);color:#fff;
+    border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+    font-size:12px;line-height:1;
+  }
+  label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px;text-transform:uppercase;letter-spacing:0.5px;}
+  input[type=text],input[type=date],input[type=number],select,textarea{
+    width:100%;padding:12px;border-radius:10px;border:1px solid rgba(26,26,26,0.3);
+    font-size:16px;background:var(--blanco);color:var(--negro);
+  }
+  textarea{resize:vertical;min-height:60px;}
+  .producto-row{
+    background:var(--blanco);border-radius:12px;padding:12px;margin-bottom:10px;
+    border:1px solid rgba(26,26,26,0.15);
+  }
+  .producto-row .fila2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .producto-row .fila3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+  .quitar-producto{
+    margin-top:8px;background:none;border:none;color:var(--rojo);font-size:13px;font-weight:700;cursor:pointer;padding:0;
+  }
+  .agregar-producto{
+    width:100%;padding:12px;border-radius:12px;border:2px dashed var(--negro);background:none;
+    font-weight:700;cursor:pointer;margin-bottom:16px;
+  }
+  .pill{
+    display:inline-block;padding:4px 10px;border-radius:20px;background:var(--negro);color:#fff;
+    font-size:12px;font-weight:700;
+  }
+  .estado-box{padding:12px;border-radius:10px;margin-bottom:10px;font-size:14px;}
+  .estado-ok{background:rgba(58,125,68,0.15);border:1px solid var(--verde);color:var(--verde);}
+  .estado-error{background:rgba(168,50,50,0.15);border:1px solid var(--rojo);color:var(--rojo);}
   .oculto{display:none !important;}
-  .loader{display:flex;align-items:center;justify-content:center;gap:10px;padding:30px 0;font-weight:600;}
-  .spinner{width:22px;height:22px;border:3px solid rgba(26,26,26,0.2);border-top-color:var(--negro);border-radius:50%;animation:spin 0.8s linear infinite;}
+  .loader{
+    display:flex;align-items:center;justify-content:center;gap:10px;padding:24px 0;font-weight:600;
+  }
+  .spinner{
+    width:22px;height:22px;border:3px solid rgba(26,26,26,0.2);border-top-color:var(--negro);
+    border-radius:50%;animation:spin 0.8s linear infinite;
+  }
   @keyframes spin{to{transform:rotate(360deg);}}
-  .top-actions{display:flex;justify-content:flex-end;padding:6px 0;}
-  .icon-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--negro);}
-  .vacio{text-align:center;color:var(--gris);font-size:13.5px;padding:20px 0;}
-  .aviso{font-size:12.5px;color:var(--gris);margin-top:6px;}
+  .selector-empleado{display:grid;grid-template-columns:1fr;gap:10px;margin-top:20px;}
+  .selector-empleado button{
+    background:var(--blanco);border:2px solid var(--negro);border-radius:14px;padding:16px;
+    font-size:17px;font-weight:700;cursor:pointer;
+  }
+  .aviso{font-size:12.5px;color:var(--gris);margin-top:6px;line-height:1.4;}
+  .footer-nav{display:flex;gap:10px;margin-top:20px;}
+  .footer-nav button{flex:1;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- PANTALLA PIN -->
-  <div id="pantalla-pin">
+  <!-- PANTALLA: SELECCIÓN DE EMPLEADO -->
+  <div id="pantalla-empleado">
     <div class="logo">
       <svg viewBox="0 0 320 170" xmlns="http://www.w3.org/2000/svg">
         <text x="160" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="18" letter-spacing="6" fill="#1a1a1a">—GATA—</text>
@@ -84,19 +131,15 @@
         <text x="160" y="142" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#1a1a1a">FIAMBRES + VERMUT</text>
       </svg>
     </div>
-    <div class="pin-wrap">
-      <div id="pin-titulo" style="margin-bottom:10px;font-weight:700;">Ingresá tu PIN</div>
-      <input type="password" id="pin-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="••••">
-      <button class="big" id="btn-pin-entrar">Entrar</button>
-      <div class="aviso" id="pin-aviso"></div>
-    </div>
+    <div class="saludo">¿Quién sos?</div>
+    <div class="selector-empleado" id="lista-empleados"></div>
   </div>
 
-  <!-- PANTALLA ADMIN -->
-  <div id="pantalla-admin" class="oculto">
+  <!-- PANTALLA: HOME -->
+  <div id="pantalla-home" class="oculto">
     <div class="top-actions">
-      <button class="icon-btn" id="btn-bloquear">🔒</button>
-      <button class="icon-btn" id="btn-recargar">🔄</button>
+      <button class="icon-btn" id="btn-cambiar-empleado">👤 Cambiar</button>
+      <button class="icon-btn" id="btn-config">⚙️</button>
     </div>
     <div class="logo">
       <svg viewBox="0 0 320 170" xmlns="http://www.w3.org/2000/svg">
@@ -108,309 +151,623 @@
     </div>
     <div class="saludo" id="saludo-texto"></div>
 
-    <div class="tabs">
-      <div class="tab activo" data-tab="historial">Historial</div>
-      <div class="tab" data-tab="proveedores">Por proveedor</div>
-      <div class="tab" data-tab="alertas">Alertas de precio</div>
-      <div class="tab" data-tab="eerr">EERR del mes</div>
-      <div class="tab" data-tab="config">⚙️ Ajustes</div>
+    <div class="card">
+      <h2 class="section-title" style="margin-top:0">Registrar mercadería</h2>
+      <div class="grid-captura">
+        <button class="cap-btn" id="btn-pegar"><span class="emoji">📋</span>Pegar imagen</button>
+        <button class="cap-btn" id="btn-camara"><span class="emoji">📷</span>Cámara</button>
+        <button class="cap-btn" id="btn-galeria"><span class="emoji">🖼️</span>Galería</button>
+        <button class="cap-btn" id="btn-pdf"><span class="emoji">📄</span>PDF</button>
+      </div>
+      <div class="aviso">iPhone: en Fotos, copiá la imagen de la factura y volvé acá para tocar "Pegar imagen".</div>
+      <div class="paste-zone" id="zona-pegado" contenteditable="true" tabindex="-1"></div>
+
+      <div class="thumbs" id="thumbs"></div>
+
+      <input type="file" id="input-camara" accept="image/*" capture="environment" class="oculto">
+      <input type="file" id="input-galeria" accept="image/*" multiple class="oculto">
+      <input type="file" id="input-pdf" accept="application/pdf" class="oculto">
+
+      <button class="big oculto" id="btn-analizar">Analizar con IA</button>
     </div>
+  </div>
 
-    <div id="loader-datos" class="loader"><div class="spinner"></div><span>Cargando datos…</span></div>
+  <!-- PANTALLA: CARGANDO -->
+  <div id="pantalla-cargando" class="oculto">
+    <div class="loader"><div class="spinner"></div><span id="texto-cargando">Analizando documento…</span></div>
+  </div>
 
-    <!-- HISTORIAL -->
-    <div id="vista-historial" class="vista oculto">
-      <div class="card">
-        <div class="filtros">
-          <select id="f-proveedor"><option value="">Todos los proveedores</option></select>
-          <select id="f-categoria"><option value="">Todas las categorías</option></select>
-          <select id="f-mes"><option value="">Todos los meses</option></select>
+  <!-- PANTALLA: REVISIÓN -->
+  <div id="pantalla-revision" class="oculto">
+    <h2 class="section-title" style="margin-top:0">Revisá los datos</h2>
+    <div class="card">
+      <label>Tipo</label>
+      <select id="rev-tipo">
+        <option value="FACTURA">FACTURA</option>
+        <option value="REMITO">REMITO</option>
+      </select>
+      <label>Proveedor</label>
+      <input type="text" id="rev-proveedor">
+      <label>Fecha</label>
+      <input type="date" id="rev-fecha">
+      <div class="producto-row" style="margin-top:8px">
+        <div class="fila2">
+          <div><label style="margin-top:0">N° Factura</label><input type="text" id="rev-nro-factura"></div>
+          <div><label style="margin-top:0">N° Remito</label><input type="text" id="rev-nro-remito"></div>
         </div>
-        <div style="overflow-x:auto">
-          <table id="tabla-historial">
-            <thead><tr><th>Fecha</th><th>Proveedor</th><th>Producto</th><th>Total</th><th>Resp.</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div class="vacio oculto" id="historial-vacio">No hay ingresos con esos filtros.</div>
       </div>
     </div>
 
-    <!-- POR PROVEEDOR -->
-    <div id="vista-proveedores" class="vista oculto">
-      <div class="card">
-        <select id="mes-proveedores" style="margin-bottom:10px"></select>
-        <div id="lista-proveedores"></div>
+    <h2 class="section-title">Productos</h2>
+    <div id="lista-productos"></div>
+    <button class="agregar-producto" id="btn-agregar-producto">+ Agregar producto</button>
+
+    <div class="card">
+      <label style="margin-top:0">Total de la factura (con IVA incluido)</label>
+      <input type="number" step="0.01" id="rev-total-factura">
+      <div class="aviso">Es el total impreso en el documento. Puede no coincidir exactamente con la suma de los productos (fletes, redondeos, etc.) — así queda igual a lo que le debemos al proveedor.</div>
+
+      <label>IVA de esta factura</label>
+      <select id="rev-iva">
+        <option value="">No sé / no discriminada (se carga en PPTO con IVA incluido)</option>
+        <option value="21">21%</option>
+        <option value="10.5">10,5%</option>
+        <option value="27">27%</option>
+        <option value="5">5%</option>
+        <option value="2.5">2,5%</option>
+        <option value="0">0% (Exento)</option>
+      </select>
+      <div class="aviso">Se usa para calcular el precio SIN IVA que se carga en Costos Variables (PPTO). En Mercadería y EERR se guarda el precio/total tal cual figura en la factura (con IVA).</div>
+    </div>
+
+    <div class="card">
+      <label style="margin-top:0">¿Fue pagada?</label>
+      <select id="rev-pagado">
+        <option value="no">No, queda pendiente</option>
+        <option value="si">Sí, ya se pagó</option>
+      </select>
+      <div id="wrap-medio-pago">
+        <label>Medio de pago</label>
+        <select id="rev-medio-pago">
+          <option value="Efectivo">Efectivo</option>
+          <option value="Transferencia">Transferencia</option>
+          <option value="Tarjeta débito">Tarjeta débito</option>
+          <option value="Tarjeta crédito">Tarjeta crédito</option>
+          <option value="Cheque">Cheque</option>
+          <option value="Cuenta corriente">Cuenta corriente</option>
+          <option value="Otro">Otro</option>
+        </select>
       </div>
     </div>
 
-    <!-- ALERTAS -->
-    <div id="vista-alertas" class="vista oculto">
-      <div class="card">
-        <div style="font-size:13px;color:var(--gris);margin-bottom:10px">Se marca cuando un producto subió más de 10% respecto al ingreso anterior del mismo proveedor.</div>
-        <div id="lista-alertas"></div>
-        <div class="vacio oculto" id="alertas-vacio">No hay subas mayores al 10% detectadas.</div>
-      </div>
+    <div class="card">
+      <label style="margin-top:0">Observaciones</label>
+      <textarea id="rev-observaciones" placeholder="Opcional"></textarea>
     </div>
 
-    <!-- EERR -->
-    <div id="vista-eerr" class="vista oculto">
-      <div class="kpi-grid">
-        <div class="kpi"><div class="valor" id="kpi-ventas">—</div><div class="label">Ventas del mes</div></div>
-        <div class="kpi"><div class="valor" id="kpi-gastos">—</div><div class="label">Gastos del mes</div></div>
-      </div>
-      <div class="card">
-        <div class="resumen-item"><span>Mes analizado</span><strong id="eerr-mes">—</strong></div>
-        <div class="resumen-item"><span>Resultado (ventas - gastos)</span><strong id="eerr-resultado">—</strong></div>
-      </div>
-      <div class="aviso" id="eerr-nota"></div>
-    </div>
+    <button class="big" id="btn-confirmar">Confirmar y guardar</button>
+    <button class="secundario" id="btn-cancelar-revision">Cancelar</button>
+  </div>
 
-    <!-- CONFIG -->
-    <div id="vista-config" class="vista oculto">
-      <div class="card">
-        <label style="font-size:13px;font-weight:700;display:block;margin-bottom:6px">URL del Apps Script</label>
-        <input type="text" id="cfg-script-url">
-        <label style="font-size:13px;font-weight:700;display:block;margin:12px 0 6px">Cambiar PIN (4 dígitos)</label>
-        <input type="password" id="cfg-nuevo-pin" inputmode="numeric" maxlength="4" placeholder="••••">
-      </div>
-      <button class="big" id="btn-guardar-config">Guardar</button>
+  <!-- PANTALLA: RESULTADO -->
+  <div id="pantalla-resultado" class="oculto">
+    <h2 class="section-title" style="margin-top:0">Resultado</h2>
+    <div id="resultado-detalle"></div>
+    <button class="big" id="btn-registrar-otra">Registrar otra</button>
+  </div>
+
+  <!-- PANTALLA: CONFIGURACIÓN -->
+  <div id="pantalla-config" class="oculto">
+    <h2 class="section-title" style="margin-top:0">Ajustes</h2>
+    <div class="card">
+      <label style="margin-top:0">API Key de Anthropic</label>
+      <input type="text" id="cfg-apikey" placeholder="sk-ant-...">
+      <div class="aviso">Se guarda solo en este teléfono (localStorage). Nunca se envía a ningún lado salvo al proxy propio.</div>
+
+      <label>URL del Apps Script (proxy de Sheets)</label>
+      <input type="text" id="cfg-script-url">
+
+      <label>Sheet ID — Mercadería</label>
+      <input type="text" id="cfg-sheet-mercaderia">
+      <label>Sheet ID — EERR</label>
+      <input type="text" id="cfg-sheet-eerr">
+      <label>Sheet ID — PPTO</label>
+      <input type="text" id="cfg-sheet-ppto">
+    </div>
+    <button class="big" id="btn-guardar-config">Guardar</button>
+    <button class="secundario" id="btn-cerrar-config">Volver</button>
+
+    <div class="card" style="margin-top:22px">
+      <h2 class="section-title" style="margin-top:0">Compartir esta configuración</h2>
+      <div class="aviso">Generá un link que ya trae todo cargado (API key, URLs, Sheet IDs). Mandaselo por WhatsApp a Manu o Facu: al abrirlo una vez en su celular, no van a tener que escribir nada en Ajustes.</div>
+      <button class="secundario" id="btn-generar-link" style="margin-top:10px">Generar link para compartir</button>
+      <textarea id="link-generado" readonly style="margin-top:8px;font-size:12px;" class="oculto"></textarea>
+      <button class="secundario oculto" id="btn-copiar-link">Copiar link</button>
     </div>
   </div>
 
 </div>
 
 <script>
-const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKy8E5ZFp-gqq0Q5njwZJ5EjY81tIMQPLCZ7HrrP_CK9Em61G96t242XnvV95a7KbTTg/exec';
-const UMBRAL_ALERTA = 0.10;
+// ============================================================
+// CONFIGURACIÓN POR DEFECTO (editable desde Ajustes ⚙️)
+// ============================================================
+const DEFAULTS = {
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbyKy8E5ZFp-gqq0Q5njwZJ5EjY81tIMQPLCZ7HrrP_CK9Em61G96t242XnvV95a7KbTTg/exec',
+  sheetMercaderia: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgV',
+  sheetEERR: '1oqvEIqPLbQR2cEi4wQbp7mgzqp5Nb6y2wVWK9GWDKNQ',
+  sheetPPTO: '1T4y_c0n2KYF0PPACMck9hmDpBDCnus8v'
+};
+const EMPLEADOS = ['Manu', 'Facu', 'Colaboradores de Gata'];
+const CATEGORIAS = ['FIAMBRES Y QUESOS','VERMUT','COCINA','INSUMOS DE LIMPIEZA','PAN','DESCARTABLES','VERDULERÍA','COMIDA DE PERSONAL','OTROS'];
 
-function scriptUrl() {
-  return localStorage.getItem('gm_admin_script_url') || DEFAULT_SCRIPT_URL;
+function cfg(key) {
+  return localStorage.getItem('gm_' + key) || DEFAULTS[key] || '';
+}
+function setCfg(key, val) {
+  localStorage.setItem('gm_' + key, val);
 }
 
-let datosMercaderia = [];
-let datosEERR = null;
+let archivosCapturados = []; // { mediaType, base64, previewUrl }
+let datosExtraidos = null;
 
-// ---------- PIN ----------
-function pinGuardado() { return localStorage.getItem('gm_admin_pin'); }
-
-function initPin() {
-  const guardado = pinGuardado();
-  document.getElementById('pin-titulo').textContent = guardado ? 'Ingresá tu PIN' : 'Creá un PIN de 4 dígitos';
+// ---------- Navegación entre pantallas ----------
+const pantallas = ['empleado','home','cargando','revision','resultado','config'];
+function mostrarPantalla(nombre) {
+  pantallas.forEach(p => {
+    document.getElementById('pantalla-' + p).classList.toggle('oculto', p !== nombre);
+  });
 }
-document.getElementById('btn-pin-entrar').onclick = () => {
-  const val = document.getElementById('pin-input').value.trim();
-  if (!/^\d{4}$/.test(val)) {
-    document.getElementById('pin-aviso').textContent = 'El PIN debe tener 4 dígitos.';
-    return;
-  }
-  const guardado = pinGuardado();
-  if (!guardado) {
-    localStorage.setItem('gm_admin_pin', val);
-    entrarAAdmin();
-  } else if (val === guardado) {
-    entrarAAdmin();
-  } else {
-    document.getElementById('pin-aviso').textContent = 'PIN incorrecto.';
-    document.getElementById('pin-input').value = '';
-  }
-};
-document.getElementById('btn-bloquear').onclick = () => {
-  document.getElementById('pantalla-admin').classList.add('oculto');
-  document.getElementById('pantalla-pin').classList.remove('oculto');
-  document.getElementById('pin-input').value = '';
-  initPin();
+
+// ---------- Selección de empleado ----------
+function initSelectorEmpleado() {
+  const cont = document.getElementById('lista-empleados');
+  cont.innerHTML = '';
+  EMPLEADOS.forEach(nombre => {
+    const b = document.createElement('button');
+    b.textContent = nombre;
+    b.onclick = () => {
+      localStorage.setItem('gm_empleado', nombre);
+      irAHome();
+    };
+    cont.appendChild(b);
+  });
+}
+document.getElementById('btn-cambiar-empleado').onclick = () => {
+  mostrarPantalla('empleado');
 };
 
-function entrarAAdmin() {
-  document.getElementById('pantalla-pin').classList.add('oculto');
-  document.getElementById('pantalla-admin').classList.remove('oculto');
+function irAHome() {
+  const nombre = localStorage.getItem('gm_empleado');
   const h = new Date().getHours();
   const momento = h < 12 ? 'Buenos días' : (h < 20 ? 'Buenas tardes' : 'Buenas noches');
-  document.getElementById('saludo-texto').textContent = `${momento}, Lautaro!`;
-  cargarTodo();
+  document.getElementById('saludo-texto').textContent = `${momento}, ${nombre}!`;
+  mostrarPantalla('home');
 }
 
-// ---------- Tabs ----------
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.onclick = () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('activo'));
-    tab.classList.add('activo');
-    document.querySelectorAll('.vista').forEach(v => v.classList.add('oculto'));
-    document.getElementById('vista-' + tab.dataset.tab).classList.remove('oculto');
-    if (tab.dataset.tab === 'config') {
-      document.getElementById('cfg-script-url').value = scriptUrl();
-    }
-  };
-});
-document.getElementById('btn-recargar').onclick = () => cargarTodo();
+// ---------- Config ----------
+document.getElementById('btn-config').onclick = () => {
+  document.getElementById('cfg-apikey').value = cfg('apikey');
+  document.getElementById('cfg-script-url').value = cfg('scriptUrl');
+  document.getElementById('cfg-sheet-mercaderia').value = cfg('sheetMercaderia');
+  document.getElementById('cfg-sheet-eerr').value = cfg('sheetEERR');
+  document.getElementById('cfg-sheet-ppto').value = cfg('sheetPPTO');
+  mostrarPantalla('config');
+};
+document.getElementById('btn-cerrar-config').onclick = () => mostrarPantalla('home');
 document.getElementById('btn-guardar-config').onclick = () => {
-  const url = document.getElementById('cfg-script-url').value.trim();
-  if (url) localStorage.setItem('gm_admin_script_url', url);
-  const nuevoPin = document.getElementById('cfg-nuevo-pin').value.trim();
-  if (/^\d{4}$/.test(nuevoPin)) {
-    localStorage.setItem('gm_admin_pin', nuevoPin);
-    document.getElementById('cfg-nuevo-pin').value = '';
-  }
-  cargarTodo();
+  setCfg('apikey', document.getElementById('cfg-apikey').value.trim());
+  setCfg('scriptUrl', document.getElementById('cfg-script-url').value.trim());
+  setCfg('sheetMercaderia', document.getElementById('cfg-sheet-mercaderia').value.trim());
+  setCfg('sheetEERR', document.getElementById('cfg-sheet-eerr').value.trim());
+  setCfg('sheetPPTO', document.getElementById('cfg-sheet-ppto').value.trim());
+  mostrarPantalla('home');
 };
 
-// ---------- Carga de datos ----------
-async function cargarTodo() {
-  document.getElementById('loader-datos').classList.remove('oculto');
-  document.querySelectorAll('.vista').forEach(v => v.classList.add('oculto'));
-  try {
-    const [rMerc, rEerr] = await Promise.all([
-      fetch(scriptUrl() + '?action=mercaderia'),
-      fetch(scriptUrl() + '?action=eerrResumen')
-    ]);
-    const dMerc = await rMerc.json();
-    const dEerr = await rEerr.json();
-    datosMercaderia = dMerc.success ? dMerc.data : [];
-    datosEERR = dEerr.success ? dEerr.data : null;
-  } catch (err) {
-    alert('No se pudo conectar con el Apps Script: ' + err.message);
-    datosMercaderia = [];
-    datosEERR = null;
+// ---------- Captura de imágenes ----------
+function agregarArchivoBase64(mediaType, base64, previewUrl) {
+  archivosCapturados.push({ mediaType, base64, previewUrl });
+  renderThumbs();
+}
+
+function renderThumbs() {
+  const cont = document.getElementById('thumbs');
+  cont.innerHTML = '';
+  archivosCapturados.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'thumb';
+    if (f.mediaType === 'application/pdf') {
+      div.innerHTML = `<div class="pdf-badge">PDF</div><div class="del" data-i="${i}">✕</div>`;
+    } else {
+      div.innerHTML = `<img src="${f.previewUrl}"><div class="del" data-i="${i}">✕</div>`;
+    }
+    cont.appendChild(div);
+  });
+  cont.querySelectorAll('.del').forEach(btn => {
+    btn.onclick = () => {
+      archivosCapturados.splice(Number(btn.dataset.i), 1);
+      renderThumbs();
+      actualizarBotonAnalizar();
+    };
+  });
+  actualizarBotonAnalizar();
+}
+
+function actualizarBotonAnalizar() {
+  document.getElementById('btn-analizar').classList.toggle('oculto', archivosCapturados.length === 0);
+}
+
+// Convierte un File de imagen a JPEG (vía canvas) y devuelve {base64, previewUrl}
+function convertirAJpeg(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1600;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          const ratio = Math.min(MAX / w, MAX / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+        resolve({ base64: dataUrl.split(',')[1], previewUrl: dataUrl });
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function archivoAPdfBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Botón Cámara / Galería
+document.getElementById('btn-camara').onclick = () => document.getElementById('input-camara').click();
+document.getElementById('btn-galeria').onclick = () => document.getElementById('input-galeria').click();
+document.getElementById('btn-pdf').onclick = () => document.getElementById('input-pdf').click();
+
+document.getElementById('input-camara').onchange = async (e) => {
+  for (const file of e.target.files) {
+    const { base64, previewUrl } = await convertirAJpeg(file);
+    agregarArchivoBase64('image/jpeg', base64, previewUrl);
   }
-  document.getElementById('loader-datos').classList.add('oculto');
-  const tabActivo = document.querySelector('.tab.activo').dataset.tab;
-  document.getElementById('vista-' + tabActivo).classList.remove('oculto');
+  e.target.value = '';
+};
+document.getElementById('input-galeria').onchange = async (e) => {
+  for (const file of e.target.files) {
+    const { base64, previewUrl } = await convertirAJpeg(file);
+    agregarArchivoBase64('image/jpeg', base64, previewUrl);
+  }
+  e.target.value = '';
+};
+document.getElementById('input-pdf').onchange = async (e) => {
+  for (const file of e.target.files) {
+    const base64 = await archivoAPdfBase64(file);
+    agregarArchivoBase64('application/pdf', base64, null);
+  }
+  e.target.value = '';
+};
 
-  renderFiltrosHistorial();
-  renderHistorial();
-  renderProveedores();
-  renderAlertas();
-  renderEERR();
-}
-
-// ---------- Historial ----------
-function campoFecha(r) { return r.fecha || ''; }
-function campoProveedor(r) { return r.proveedor || ''; }
-function campoCategoria(r) { return r.categoria || ''; }
-function campoProducto(r) { return r.producto || ''; }
-function campoTotal(r) { return Number(r.total) || 0; }
-function campoResponsable(r) { return r.responsable || ''; }
-
-function renderFiltrosHistorial() {
-  const proveedores = [...new Set(datosMercaderia.map(campoProveedor))].filter(Boolean).sort();
-  const categorias = [...new Set(datosMercaderia.map(campoCategoria))].filter(Boolean).sort();
-  const meses = [...new Set(datosMercaderia.map(r => campoFecha(r).slice(0,7)))].filter(Boolean).sort().reverse();
-
-  const selProv = document.getElementById('f-proveedor');
-  const selCat = document.getElementById('f-categoria');
-  const selMes = document.getElementById('f-mes');
-  const selMesProv = document.getElementById('mes-proveedores');
-
-  selProv.innerHTML = '<option value="">Todos los proveedores</option>' + proveedores.map(p => `<option value="${p}">${p}</option>`).join('');
-  selCat.innerHTML = '<option value="">Todas las categorías</option>' + categorias.map(c => `<option value="${c}">${c}</option>`).join('');
-  selMes.innerHTML = '<option value="">Todos los meses</option>' + meses.map(m => `<option value="${m}">${m}</option>`).join('');
-  selMesProv.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('') || '<option value="">Sin datos</option>';
-
-  [selProv, selCat, selMes].forEach(s => s.onchange = renderHistorial);
-  selMesProv.onchange = renderProveedores;
-}
-
-function renderHistorial() {
-  const prov = document.getElementById('f-proveedor').value;
-  const cat = document.getElementById('f-categoria').value;
-  const mes = document.getElementById('f-mes').value;
-
-  let filas = datosMercaderia.filter(r =>
-    (!prov || campoProveedor(r) === prov) &&
-    (!cat || campoCategoria(r) === cat) &&
-    (!mes || campoFecha(r).slice(0,7) === mes)
-  );
-  filas.sort((a,b) => campoFecha(b).localeCompare(campoFecha(a)));
-
-  const tbody = document.querySelector('#tabla-historial tbody');
-  tbody.innerHTML = filas.slice(0, 300).map(r => `
-    <tr>
-      <td>${campoFecha(r)}</td>
-      <td>${campoProveedor(r)}</td>
-      <td>${campoProducto(r)}</td>
-      <td>$${campoTotal(r).toLocaleString('es-AR', {minimumFractionDigits:2})}</td>
-      <td>${campoResponsable(r)}</td>
-    </tr>
-  `).join('');
-  document.getElementById('historial-vacio').classList.toggle('oculto', filas.length > 0);
-}
-
-// ---------- Por proveedor ----------
-function renderProveedores() {
-  const mes = document.getElementById('mes-proveedores').value;
-  const filas = datosMercaderia.filter(r => !mes || campoFecha(r).slice(0,7) === mes);
-  const totales = {};
-  filas.forEach(r => {
-    const p = campoProveedor(r) || 'Sin proveedor';
-    totales[p] = (totales[p] || 0) + campoTotal(r);
-  });
-  const ordenado = Object.entries(totales).sort((a,b) => b[1]-a[1]);
-  const cont = document.getElementById('lista-proveedores');
-  cont.innerHTML = ordenado.length ? ordenado.map(([p, t]) => `
-    <div class="resumen-item"><span>${p}</span><strong>$${t.toLocaleString('es-AR', {minimumFractionDigits:2})}</strong></div>
-  `).join('') : '<div class="vacio">Sin datos para este mes.</div>';
-}
-
-// ---------- Alertas de precio (>10%) ----------
-function renderAlertas() {
-  // Clave: proveedor + producto -> lista de {fecha, total_por_unidad}
-  const porClave = {};
-  datosMercaderia.forEach(r => {
-    const clave = campoProveedor(r) + '|' + campoProducto(r);
-    const precio = Number(r.precio_unit || r['precio_unit.'] || r.precio_unitario || 0);
-    if (!precio) return;
-    if (!porClave[clave]) porClave[clave] = [];
-    porClave[clave].push({ fecha: campoFecha(r), precio });
-  });
-
-  const alertas = [];
-  Object.entries(porClave).forEach(([clave, lista]) => {
-    lista.sort((a,b) => a.fecha.localeCompare(b.fecha));
-    for (let i = 1; i < lista.length; i++) {
-      const anterior = lista[i-1].precio;
-      const actual = lista[i].precio;
-      if (anterior > 0) {
-        const variacion = (actual - anterior) / anterior;
-        if (variacion > UMBRAL_ALERTA) {
-          const [proveedor, producto] = clave.split('|');
-          alertas.push({ proveedor, producto, anterior, actual, variacion, fecha: lista[i].fecha });
+// Botón "Pegar imagen" (método principal iOS 16):
+// enfoca un div contenteditable invisible y dispara el evento paste nativo.
+const zonaPegado = document.getElementById('zona-pegado');
+document.getElementById('btn-pegar').onclick = () => {
+  zonaPegado.focus();
+  // En iOS Safari, document.execCommand('paste') no funciona por seguridad,
+  // así que le indicamos al usuario que mantenga presionado / Cmd+V.
+  // Intentamos primero la Clipboard API moderna (funciona en muchos casos con gesto de usuario):
+  if (navigator.clipboard && navigator.clipboard.read) {
+    navigator.clipboard.read().then(async (items) => {
+      for (const item of items) {
+        const tipoImg = item.types.find(t => t.startsWith('image/'));
+        if (tipoImg) {
+          const blob = await item.getType(tipoImg);
+          const file = new File([blob], 'pegado.jpg', { type: tipoImg });
+          const { base64, previewUrl } = await convertirAJpeg(file);
+          agregarArchivoBase64('image/jpeg', base64, previewUrl);
         }
       }
+    }).catch(() => {
+      alert('Tocá la pantalla y elegí "Pegar" (o mantené presionado sobre el botón 📋 y elegí Pegar).');
+    });
+  } else {
+    alert('Mantené presionado el botón 📋 y elegí "Pegar" desde el menú, o volvé a Fotos y copiá la imagen primero.');
+  }
+};
+zonaPegado.addEventListener('paste', async (e) => {
+  e.preventDefault();
+  const items = e.clipboardData ? e.clipboardData.items : [];
+  for (const item of items) {
+    if (item.type.indexOf('image') !== -1) {
+      const file = item.getAsFile();
+      const { base64, previewUrl } = await convertirAJpeg(file);
+      agregarArchivoBase64('image/jpeg', base64, previewUrl);
     }
-  });
-  alertas.sort((a,b) => b.variacion - a.variacion);
+  }
+  zonaPegado.innerHTML = '';
+});
 
-  const cont = document.getElementById('lista-alertas');
-  cont.innerHTML = alertas.map(a => `
-    <div class="resumen-item">
-      <span><span class="badge badge-alerta">+${(a.variacion*100).toFixed(0)}%</span> ${a.producto} <span style="color:var(--gris)">(${a.proveedor})</span></span>
-      <strong>$${a.anterior.toFixed(2)} → $${a.actual.toFixed(2)}</strong>
-    </div>
-  `).join('');
-  document.getElementById('alertas-vacio').classList.toggle('oculto', alertas.length > 0);
+// ---------- Analizar con IA ----------
+document.getElementById('btn-analizar').onclick = async () => {
+  const apikey = cfg('apikey');
+  if (!apikey) {
+    alert('Primero cargá tu API Key de Anthropic en Ajustes ⚙️');
+    return mostrarPantalla('config');
+  }
+  mostrarPantalla('cargando');
+  document.getElementById('texto-cargando').textContent = 'Analizando documento…';
+  try {
+    const resp = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apikey },
+      body: JSON.stringify({
+        files: archivosCapturados.map(f => ({ mediaType: f.mediaType, base64: f.base64 }))
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok || !data.success) {
+      alert('Error al analizar: ' + (data.error || 'desconocido'));
+      mostrarPantalla('home');
+      return;
+    }
+    datosExtraidos = data.extraido;
+    cargarPantallaRevision(datosExtraidos);
+    mostrarPantalla('revision');
+  } catch (err) {
+    alert('Error de red: ' + err.message);
+    mostrarPantalla('home');
+  }
+};
+
+// ---------- Pantalla de revisión ----------
+function cargarPantallaRevision(datos) {
+  document.getElementById('rev-tipo').value = datos.tipo || 'FACTURA';
+  document.getElementById('rev-proveedor').value = datos.proveedor || '';
+  document.getElementById('rev-fecha').value = datos.fecha || new Date().toISOString().slice(0,10);
+  document.getElementById('rev-nro-factura').value = datos.numero_factura || '';
+  document.getElementById('rev-nro-remito').value = datos.numero_remito || '';
+  document.getElementById('rev-observaciones').value = '';
+  document.getElementById('rev-pagado').value = 'no';
+  document.getElementById('rev-medio-pago').value = 'Efectivo';
+  document.getElementById('wrap-medio-pago').classList.add('oculto');
+
+  const cont = document.getElementById('lista-productos');
+  cont.innerHTML = '';
+  (datos.productos || []).forEach(p => agregarFilaProducto(p));
+  if ((datos.productos || []).length === 0) agregarFilaProducto({});
+
+  const sumaLineas = (datos.productos || []).reduce((acc, p) => acc + (Number(p.total) || 0), 0);
+  document.getElementById('rev-total-factura').value = datos.total_factura ?? sumaLineas;
+
+  const selIva = document.getElementById('rev-iva');
+  if (datos.iva_discriminado && datos.alicuota_iva_detectada != null) {
+    selIva.value = String(datos.alicuota_iva_detectada);
+    if (selIva.value !== String(datos.alicuota_iva_detectada)) selIva.value = ''; // por si la IA detecta una alícuota no listada
+  } else {
+    selIva.value = '';
+  }
 }
 
-// ---------- EERR ----------
-function renderEERR() {
-  if (!datosEERR) {
-    document.getElementById('eerr-nota').textContent = 'No se pudo leer el resumen EERR.';
+document.getElementById('rev-pagado').onchange = (e) => {
+  document.getElementById('wrap-medio-pago').classList.toggle('oculto', e.target.value !== 'si');
+};
+
+function agregarFilaProducto(p) {
+  const cont = document.getElementById('lista-productos');
+  const div = document.createElement('div');
+  div.className = 'producto-row';
+  const opcionesCat = CATEGORIAS.map(c => `<option value="${c}" ${p.categoria===c?'selected':''}>${c}</option>`).join('');
+  div.innerHTML = `
+    <label style="margin-top:0">Categoría</label>
+    <select class="p-categoria">${opcionesCat}</select>
+    <div class="fila2">
+      <div><label>Marca</label><input type="text" class="p-marca" value="${p.marca || ''}"></div>
+      <div><label>Descripción</label><input type="text" class="p-descripcion" value="${p.descripcion || ''}"></div>
+    </div>
+    <div class="fila3">
+      <div><label>Kg/Litros</label><input type="number" step="0.01" class="p-kg" value="${p.kg_litros ?? ''}"></div>
+      <div><label>Unidades</label><input type="number" step="1" class="p-unidades" value="${p.unidades ?? ''}"></div>
+      <div><label>Precio unit.</label><input type="number" step="0.01" class="p-precio" value="${p.precio_unitario ?? ''}"></div>
+    </div>
+    <label>Total</label>
+    <input type="number" step="0.01" class="p-total" value="${p.total ?? ''}">
+    <button class="quitar-producto">✕ Quitar producto</button>
+  `;
+  div.querySelector('.quitar-producto').onclick = () => div.remove();
+  cont.appendChild(div);
+}
+document.getElementById('btn-agregar-producto').onclick = () => agregarFilaProducto({});
+document.getElementById('btn-cancelar-revision').onclick = () => {
+  archivosCapturados = [];
+  renderThumbs();
+  mostrarPantalla('home');
+};
+
+function leerProductosDeFormulario() {
+  return Array.from(document.querySelectorAll('#lista-productos .producto-row')).map(div => ({
+    categoria: div.querySelector('.p-categoria').value,
+    marca: div.querySelector('.p-marca').value.trim(),
+    descripcion: div.querySelector('.p-descripcion').value.trim(),
+    kg_litros: div.querySelector('.p-kg').value ? Number(div.querySelector('.p-kg').value) : null,
+    unidades: div.querySelector('.p-unidades').value ? Number(div.querySelector('.p-unidades').value) : null,
+    precio_unitario: Number(div.querySelector('.p-precio').value || 0),
+    total: Number(div.querySelector('.p-total').value || 0)
+  }));
+}
+
+// ---------- Confirmar y guardar ----------
+document.getElementById('btn-confirmar').onclick = async () => {
+  const productos = leerProductosDeFormulario();
+  if (productos.length === 0) {
+    alert('Agregá al menos un producto.');
     return;
   }
-  document.getElementById('eerr-mes').textContent = datosEERR.mes || '—';
-  document.getElementById('kpi-gastos').textContent = '$' + (datosEERR.gastos || 0).toLocaleString('es-AR', {minimumFractionDigits:0});
-  document.getElementById('kpi-ventas').textContent = datosEERR.ventas != null ? '$' + datosEERR.ventas.toLocaleString('es-AR', {minimumFractionDigits:0}) : '—';
-  if (datosEERR.ventas != null) {
-    const resultado = datosEERR.ventas - datosEERR.gastos;
-    document.getElementById('eerr-resultado').textContent = '$' + resultado.toLocaleString('es-AR', {minimumFractionDigits:0});
-  } else {
-    document.getElementById('eerr-resultado').textContent = '—';
+  const ivaVal = document.getElementById('rev-iva').value;
+  const pagado = document.getElementById('rev-pagado').value === 'si';
+
+  const payload = {
+    action: 'registrarIngreso',
+    tipo: document.getElementById('rev-tipo').value,
+    proveedor: document.getElementById('rev-proveedor').value.trim(),
+    fecha: document.getElementById('rev-fecha').value,
+    numero_factura: document.getElementById('rev-nro-factura').value.trim(),
+    numero_remito: document.getElementById('rev-nro-remito').value.trim(),
+    responsable: localStorage.getItem('gm_empleado') || '',
+    observaciones: document.getElementById('rev-observaciones').value.trim(),
+    total_factura: Number(document.getElementById('rev-total-factura').value || 0),
+    iva_pct: ivaVal === '' ? null : Number(ivaVal),
+    pagado: pagado,
+    medio_pago: pagado ? document.getElementById('rev-medio-pago').value : '',
+    productos
+  };
+
+  mostrarPantalla('cargando');
+  document.getElementById('texto-cargando').textContent = 'Guardando en Sheets…';
+
+  try {
+    const resp = await fetch(cfg('scriptUrl'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS con Apps Script
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    mostrarResultado(data);
+  } catch (err) {
+    mostrarResultado({ success: false, error: 'Error de red: ' + err.message });
   }
-  document.getElementById('eerr-nota').textContent = datosEERR.notaVentas || '';
+};
+
+function mostrarResultado(data) {
+  const cont = document.getElementById('resultado-detalle');
+  cont.innerHTML = '';
+
+  function bloque(titulo, ok, detalle) {
+    const div = document.createElement('div');
+    div.className = 'estado-box ' + (ok ? 'estado-ok' : 'estado-error');
+    div.innerHTML = `<strong>${ok ? '✅' : '⚠️'} ${titulo}</strong><br>${detalle}`;
+    cont.appendChild(div);
+  }
+
+  if (data.mercaderia) {
+    bloque('Mercadería', data.mercaderia.success,
+      data.mercaderia.success ? `${data.mercaderia.filas} fila(s) guardadas.` : data.mercaderia.error);
+  }
+  if (data.eerr) {
+    bloque('EERR (Egresos)', data.eerr.success,
+      data.eerr.success ? `Hoja "${data.eerr.hoja}", ${data.eerr.filas} fila(s). Total cargado: $${(data.eerr.totalCargado||0).toLocaleString('es-AR',{minimumFractionDigits:2})}` : data.eerr.error);
+  }
+  if (data.ppto) {
+    let det = '';
+    if (data.ppto.success) {
+      det += data.ppto.actualizados.length ? `Actualizados (precio neto): ${data.ppto.actualizados.join(', ')}` : 'Sin cambios de precio relevantes.';
+      if (data.ppto.noEncontrados.length) det += `<br><strong>No encontrados en PPTO:</strong> ${data.ppto.noEncontrados.join(', ')}`;
+      if (data.ppto.avisoSinIva) det += `<br><em>${data.ppto.avisoSinIva}</em>`;
+    } else {
+      det = data.ppto.error;
+    }
+    bloque('PPTO (Costos Variables)', data.ppto.success, det);
+  }
+  if (data.error) {
+    bloque('Error general', false, data.error);
+  }
+
+  mostrarPantalla('resultado');
+}
+
+document.getElementById('btn-registrar-otra').onclick = () => {
+  archivosCapturados = [];
+  datosExtraidos = null;
+  renderThumbs();
+  irAHome();
+};
+
+// ---------- Compartir configuración (link con todo cargado) ----------
+function codificarConfig(obj) {
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+function decodificarConfig(str) {
+  return JSON.parse(decodeURIComponent(escape(atob(str))));
+}
+
+document.getElementById('btn-generar-link').onclick = () => {
+  const datos = {
+    apikey: cfg('apikey'),
+    scriptUrl: cfg('scriptUrl'),
+    sheetMercaderia: cfg('sheetMercaderia'),
+    sheetEERR: cfg('sheetEERR'),
+    sheetPPTO: cfg('sheetPPTO')
+  };
+  if (!datos.apikey) {
+    alert('Primero cargá y guardá la API Key acá arriba, así el link la incluye.');
+    return;
+  }
+  const codificado = codificarConfig(datos);
+  const url = `${location.origin}${location.pathname}?setup=${codificado}`;
+  const area = document.getElementById('link-generado');
+  area.value = url;
+  area.classList.remove('oculto');
+  area.rows = 4;
+  document.getElementById('btn-copiar-link').classList.remove('oculto');
+};
+
+document.getElementById('btn-copiar-link').onclick = async () => {
+  const area = document.getElementById('link-generado');
+  area.select();
+  try {
+    await navigator.clipboard.writeText(area.value);
+    alert('Link copiado. Mandaselo por WhatsApp a Manu o Facu.');
+  } catch (e) {
+    document.execCommand('copy');
+    alert('Link copiado (o seleccionado, si tu navegador no permite copiar solo).');
+  }
+};
+
+function aplicarConfigDesdeLink() {
+  const params = new URLSearchParams(location.search);
+  const setup = params.get('setup');
+  if (!setup) return false;
+  try {
+    const datos = decodificarConfig(setup);
+    if (datos.apikey) setCfg('apikey', datos.apikey);
+    if (datos.scriptUrl) setCfg('scriptUrl', datos.scriptUrl);
+    if (datos.sheetMercaderia) setCfg('sheetMercaderia', datos.sheetMercaderia);
+    if (datos.sheetEERR) setCfg('sheetEERR', datos.sheetEERR);
+    if (datos.sheetPPTO) setCfg('sheetPPTO', datos.sheetPPTO);
+    // Limpiamos el link de la barra de direcciones para no dejar la config a la vista
+    history.replaceState({}, '', location.pathname);
+    return true;
+  } catch (e) {
+    alert('El link de configuración no se pudo leer. Pedí que te manden uno nuevo.');
+    return false;
+  }
 }
 
 // ---------- Init ----------
-initPin();
+(function init() {
+  aplicarConfigDesdeLink();
+  initSelectorEmpleado();
+  if (localStorage.getItem('gm_empleado')) {
+    irAHome();
+  } else {
+    mostrarPantalla('empleado');
+  }
+})();
 </script>
 </body>
 </html>
